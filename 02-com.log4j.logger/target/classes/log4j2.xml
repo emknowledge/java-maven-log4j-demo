@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<Appenders>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{ISO8601} [%t] %-5level %logger{36} - (%F:%L) - %msg%n" />
+		</Console>
+
+	</Appenders>
+
+
+	<Loggers>
+
+
+		<!-- Um die doppelten Ausgaben zu überprüfen, können Sie Ihr Programm mit starten
+			 in dem sie Java Application als Typ der Ausführungskonfiguration wählen.
+			 Geben Sie in das Feld Main Class den Namen der Main-Klasse Ihres Programms ein.
+			 Klicken Sie auf Arguments.
+			 Geben Sie im Feld Program arguments den folgenden Befehl ein: java -Dlog4j.configurationFile=log4j2.xml Main
+ 			 ,die additivity-Eigenschaft nur für den aktuellen Logger gilt, 
+ 			 während der Befehl java -Dlog4j.configurationFile=log4j2.xml Main für alle Logger gilt.
+ 			
+		 -->
+		<logger name="com.projekt" level="WARN" additivity="false"> <!-- bei level="WARN" würde Logging1 nicht mit ge-Logt werden -->
+			<AppenderRef ref="Console" />
+		</logger>
+		
+		<!-- Gezieltes Paket Loggen -->
+		<logger name="com.projekt.logger" level="FATAL" additivity="false"> <!-- bei level="FATAL" würde Logging2 nicht mit ge-Logt werden -->
+			<AppenderRef ref="Console" />
+		</logger>
+		
+		<logger name="com.projekt.test" level="INFO" additivity="false"> <!-- bei level="FATAL" würde Logging2 nicht mit ge-Logt werden -->
+			<AppenderRef ref="Console" />
+		</logger>
+
+	</Loggers>
+</Configuration>
+<!-- 
+Die Eigenschaft additivity legt fest, ob eine Log-Meldung, die von einem Logger mit einem bestimmten Level erzeugt wird, auch an Logger mit dem gleichen Level weitergegeben wird, die nicht explizit in der XML-Konfiguration hinzugefügt wurden.
+
+Wenn additivity auf false gesetzt ist, wird die Log-Meldung nur an den Logger weitergegeben, von dem sie erzeugt wurde. Wenn additivity auf true gesetzt ist, wird die Log-Meldung auch an alle Logger weitergegeben, die nicht explizit in der XML-Konfiguration hinzugefügt wurden, die das gleiche Level haben.
+
+In Ihrem Fall haben Sie drei Klassen, die alle den Logger com.projekt verwenden, um Log-Meldungen zu erzeugen. Sie haben den Logger com.projekt mit dem Level INFO hinzugefügt.
+
+Wenn additivity auf false gesetzt ist, wie in Ihrer ursprünglichen XML-Konfiguration, werden die Log-Meldungen auch an den Logger root weitergegeben, der den Level DEBUG hat. Dies liegt daran, dass der Logger root das gleiche Level hat wie der Logger com.projekt, und additivity auf false gesetzt ist.
+
+Um die doppelten Ausgaben zu verhindern, müssen Sie additivity auf true setzen. Dadurch wird sichergestellt, dass die Log-Meldungen nur an den Logger com.projekt weitergegeben werden, von dem sie erzeugt wurden.
+
+In Ihrer aktualisierten XML-Konfiguration ist additivity auf true gesetzt. Dies verhindert, dass die Log-Meldungen an den Logger root weitergegeben werden. Daher werden nur eine einzige Ausgabe pro Log-Meldung erzeugt.
+
+Hier ist eine Erklärung, warum die doppelten Ausgaben mit additivity=false auftreten:
+
+Klasse Logging1 erzeugt eine Log-Meldung mit dem Level INFO.
+Der Logger com.projekt ist mit dem Level INFO hinzugefügt.
+additivity ist auf false gesetzt.
+Da additivity auf false gesetzt ist, wird die Log-Meldung auch an den Logger root weitergegeben, der den Level DEBUG hat.
+Der Logger root ist der Standard-Logger, der alle Log-Meldungen empfängt, die auf dem Level DEBUG oder höher liegen.
+Daher werden zwei Ausgaben für die Log-Meldung erzeugt: eine vom Logger com.projekt und eine vom Logger root.
+Hier ist eine Erklärung, warum die doppelten Ausgaben mit additivity=true nicht auftreten:
+
+Klasse Logging1 erzeugt eine Log-Meldung mit dem Level INFO.
+Der Logger com.projekt ist mit dem Level INFO hinzugefügt.
+additivity ist auf true gesetzt.
+Da additivity auf true gesetzt ist, wird die Log-Meldung nur an den Logger com.projekt weitergegeben.
+Daher wird nur eine Ausgabe für die Log-Meldung erzeugt: eine vom Logger com.projekt.
+		 -->

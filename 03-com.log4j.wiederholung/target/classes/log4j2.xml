@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+
+		<File name="file"
+			fileName="C:\Users\DEV\Desktop\Projeler\logDatei.log">
+			<PatternLayout
+				pattern="%d{ISO8601} %-1level (%F:%L)- %msg%n" />
+		</File>
+
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{ISO8601} [%t] %-1level %logger{36} - (%F:%L) - %msg%n" />
+		</Console>
+
+	</Appenders>
+
+
+	<Loggers>
+	
+		<!-- Wenn Root die selbe stelle vertritt dann wäre logger verhindert, in 
+			solchem Fall würden wir zwei Logger nutzen -->
+		<logger name="com.projekt.file" level="INFO" additivity="false">
+			<AppenderRef ref="file"></AppenderRef>
+			<AppenderRef ref="console"></AppenderRef>
+		</logger>
+
+	</Loggers>
+</Configuration>
+<!-- immediateFlush="false": Diese Option gibt an, ob die Log-Nachrichten 
+	unmittelbar nach dem Empfangen geschrieben werden sollen. Wenn immediateFlush 
+	auf false gesetzt ist, können Log-Nachrichten vorübergehend im Speicher zwischengespeichert 
+	werden, bevor sie in die Ziel-Appender (z. B. Dateien oder die Konsole) geschrieben 
+	werden. Dies kann die Leistung leicht verbessern, indem mehrere Nachrichten 
+	in einem Stapel in die Zielquelle geschrieben werden, anstatt jede Nachricht 
+	sofort zu schreiben. append="true": Diese Option gibt an, ob neue Log-Nachrichten 
+	an eine vorhandene Datei angehängt werden sollen, wenn die Datei bereits 
+	existiert. Wenn append auf true gesetzt ist, werden neue Log-Einträge an 
+	das Ende der Datei hinzugefügt, ohne die vorhandenen Inhalte zu überschreiben. 
+	Wenn append auf false gesetzt ist und die Datei bereits existiert, wird die 
+	Datei überschrieben, wenn neue Protokolleinträge hinzugefügt werden. Zusammengefasst 
+	bedeutet immediateFlush="false", dass Log-Nachrichten möglicherweise zwischengespeichert 
+	werden, bevor sie in die Zielquelle geschrieben werden, um die Leistung zu 
+	verbessern. append="true" bedeutet, dass neue Protokolleinträge an eine vorhandene 
+	Datei angehängt werden, ohne die Datei zu überschreiben. Dies sind Konfigurationsoptionen, 
+	die je nach den Anforderungen Ihrer Anwendung und der gewünschten Protokollierungsstrategie 
+	angepasst werden können. -->

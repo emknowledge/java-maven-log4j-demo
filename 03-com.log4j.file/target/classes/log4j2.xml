@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+
+        <File name="file1" filename="C:\Users\DEV\Desktop\Projeler\logDatei1.log">
+            <PatternLayout pattern="%-1level (%F:%L)- %msg%n" />
+        </File>
+
+        <File name="file2" filename="C:\Users\DEV\Desktop\Projeler\logDatei2.log">
+            <PatternLayout pattern="%-1level (%F:%L)- %msg%n" />
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="com.projekt" level="INFO" additivity="false">
+            <AppenderRef ref="file1" />
+        </Logger>
+
+        <Logger name="com.projekt.logger" level="WARN" additivity="false">
+            <AppenderRef ref="file2" />
+        </Logger>
+
+        <Logger name="com.projekt.logger.util" level="FATAL" additivity="false">
+            <AppenderRef ref="file2" />
+        </Logger>
+
+    </Loggers>
+</Configuration>

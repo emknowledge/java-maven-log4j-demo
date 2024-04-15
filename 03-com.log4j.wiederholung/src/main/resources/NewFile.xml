@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+<!-- Oder sie können es über Root auch 2 mal das selbe Loggen -->
+	<Appenders>
+
+		<File name="file"
+			fileName="C:\Users\DEV\Desktop\Projeler\logDatei.log"><!-- immediateFlush="false" append="true" -->
+			<PatternLayout
+				pattern="%d{ISO8601} %-5level (%F:%L)- %msg%n" />
+		</File>
+
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{ISO8601} [%t] %-5level %logger{36} - (%F:%L) - %msg%n" />
+		</Console>
+
+	</Appenders>
+
+	<Loggers>
+
+		<Root level="INFO">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="console" />
+		</Root>
+
+		<!-- Wenn Root die selbe stelle vertritt dann wäre logger verhindert, in 
+			solchem Fall würden wir zwei Logger nutzen -->
+
+		<logger name="com.projekt.file" level="INFO" additivity="false">
+			<AppenderRef ref="file"></AppenderRef>
+			<AppenderRef ref="console"></AppenderRef>
+		</logger>
+
+	</Loggers>
+</Configuration>

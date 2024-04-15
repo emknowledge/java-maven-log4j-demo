@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <!-- Die Konfiguration beginnt hier. -->
+
+    <Properties>
+        <!-- Hier definieren Sie eine benutzerdefinierte Eigenschaft "path" mit dem Pfad zum Log-Verzeichnis. -->
+        <Property name="path">C:\Users\DEV\Desktop\Projeler\TestLogs</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Hier beginnt die Konfiguration der Appender. Sie haben einen RollingFile-Appender. -->
+        <RollingFile name="rolling"
+            fileName="${path}/personal.log"
+            filePattern="${path}/personal-%d{yyyy-MM-dd-HH-mm-ss}-.%i.log"
+            ignoreExceptions="false">
+            <!-- Der RollingFile-Appender schreibt Protokolldaten in Dateien mit einem bestimmten Muster. -->
+            
+            <PatternLayout pattern="%-5level %logger{36} - (%F:%L) - %msg%n"></PatternLayout>
+            <!-- Hier definieren Sie das Protokollierungsformat. Ebene, Logger, Dateiname, Zeilennummer und Nachricht werden erfasst. -->
+
+            <Policies>
+                <!-- Die Auslösepolitik bestimmt, wann eine neue Datei erstellt wird, basierend auf der Dateigröße. -->
+                <SizeBasedTriggeringPolicy size="3kb" />
+            </Policies>
+            
+            <DefaultRolloverStrategy max="200"></DefaultRolloverStrategy>
+            <!-- Hier wird festgelegt, dass maximal 200 Dateien beibehalten werden. -->
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Hier beginnt die Konfiguration der Logger. Ein benutzerdefinierter Logger "com" wird definiert. -->
+        <Logger name="com" level="INFO" additivity="false">
+            <!-- Der benutzerdefinierte Logger "com" verwendet den oben definierten RollingFile-Appender. -->
+            <AppenderRef ref="rolling" />
+        </Logger>
+    </Loggers>
+
+</Configuration>

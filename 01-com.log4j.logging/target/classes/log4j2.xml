@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<!-- Console Pattern -->
+	<Appenders>
+	
+	<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - (%F:%L) - %msg%n" />
+		</Console>
+	 	<!--  
+		<Console name="Console1" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%t] %-1level %logger{36} - (%F:%L) - %msg%n" />
+		</Console>
+		-->
+	</Appenders>
+	
+	<!-- Loggers -->
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<!-- <AppenderRef ref="Console1" /> -->
+		</Root>
+		
+	</Loggers>
+</Configuration>
+
+<!-- 
+
+<Configuration>: Dieses Tag markiert den Beginn Ihrer Log4j2-Konfigurationsdatei und umschließt die gesamte Konfiguration.
+
+<Appenders>: Innerhalb dieses Tags werden Appender (Ausgabemethoden) definiert, die festlegen, wohin Log-Nachrichten geschrieben werden sollen.
+
+<Console name="Console" target="SYSTEM:OUT">: Dieses Tag definiert einen Appender mit dem Namen "Console", der Log-Nachrichten auf die Konsole schreibt. 
+										      Das Attribut target gibt an, dass die Ausgabe auf die Konsole (SYSTEM:OUT) erfolgen soll.
+
+<File>: Dieses Tag definiert einen Appender, der Log-Nachrichten in eine Datei schreibt. Sie können es verwenden, um Protokolle in Dateien zu schreiben.
+
+<RollingFile>: Dieses Tag definiert einen Appender, der Log-Nachrichten in eine rotierende Datei schreibt. Es ermöglicht das Erstellen von Log-Dateien, die sich automatisch rollen, wenn sie eine bestimmte Größe erreichen oder nach einer bestimmten Zeitspanne.
+
+<PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - (%F:%L) - %msg%n" />: Dieses Tag definiert das Muster,
+nach dem die Log-Nachrichten formatiert werden. 
+Das Muster %d{ISO8601} [%t] %-5level %logger{36} - (%F:%L) - %msg%n ist ein Beispielmuster und bedeutet:
+%d{ISO8601}: Das Datum und die Uhrzeit im ISO8601-Format.
+[%t]: Der Name des Threads.
+%-5level: Das Log-Level (z. B. INFO, ERROR) mit einer Mindestbreite von 5 Zeichen.
+%logger{36}: Der Name des Loggers mit einer maximalen Breite von 36 Zeichen.
+(%F:%L): Der Dateiname und die Zeilennummer des Logaufrufs.
+%msg: Der eigentliche Nachrichtentext.
+%n: Eine Zeilenumbruchsequenz, um eine neue Zeile zu beginnen.
+
+<Loggers>: ist der übergeordnete Tag, der alle Logger-Definitionen in der Konfigurationsdatei enthält.
+Hier werden alle Logger für verschiedene Klassen oder Pakete definiert.
+
+
+<Logger>: ist der Tag, der einen spezifischen Logger definiert.
+Es enthält normalerweise Attribute wie name (der Name des Loggers) und level (das Log-Level dieses Loggers).
+Ein <Logger> kann auch <AppenderRef>-Tags enthalten, um anzugeben, welche Appender für diesen Logger verwendet werden sollen.
+
+
+<Root>: ist ein spezieller Logger-Tag und stellt den Root-Logger dar. Wir kännen bekannt geben welchen Appender wir nutzen wollen.
+Der Root-Logger ist der Standard-Logger, der von allen Klassen verwendet wird, die keinen eigenen Logger konfiguriert haben.
+Hier wird normalerweise das globale Log-Level für alle Nachrichten festgelegt, die nicht von anderen Logger-Definitionen erfasst werden.
+Sprich wenn ein Paket oder Klasse privat <Logger> nicht nutzt wird root als wurzel Log gültig
+
+<AppenderRef>: ist ein Tag, der in einem <Logger> verwendet wird, um anzugeben, welche Appender für diesen Logger verwendet werden sollen.
+Es enthält normalerweise das Attribut ref, das auf den Namen eines Appenders verweist, der bereits in der Konfiguration definiert ist. 
+
+
+Log-Nachrichten können an verschiedene Ziele (Appender) geschrieben werden, je nach den Anforderungen und den Bedürfnissen Ihrer Anwendung. 
+Hier sind einige der häufigsten Ziele für Log-Nachrichten:
+
+Konsole (Console): Sie können Log-Nachrichten auf der Konsole anzeigen, was besonders nützlich ist, wenn Sie Ihre Anwendung über
+die Befehlszeile ausführen oder Entwicklungs- und Testinformationen anzeigen möchten.
+
+<Datei> (File oder RollingFile): Log-Nachrichten können in Dateien geschrieben werden. Dies ist hilfreich, um Protokolle 
+über einen längeren Zeitraum zu speichern und später zu überprüfen. Das RollingFile-Appender kann verwendet werden, um mehrere 
+Protokolldateien zu erstellen und sie bei Erreichen einer bestimmten Größe oder nach einer gewissen Zeitspanne zu rollen.
+
+Datenbank (JDBC oder andere): Sie können Log-Nachrichten direkt in eine Datenbank schreiben, um umfangreiche 
+Protokolldaten für Analysen und Berichterstellung zu speichern.
+
+Remote-Server (Socket): Log-Nachrichten können an entfernte Server gesendet werden, um Protokolle zentral zu sammeln und zu überwachen.
+
+Eigene Appender: Sie können benutzerdefinierte Appender erstellen, um Log-Nachrichten an beliebige Ziele zu senden. 
+Dies ist besonders nützlich, wenn Sie spezielle Anforderungen haben, die von den Standardappender-Typen nicht erfüllt werden.
+
+Elastische Suche, Logstash, Kibana (ELK-Stack): Diese Werkzeuge sind beliebt für das zentrale Sammeln, Speichern 
+und Analysieren von Protokollen in großen verteilten Systemen.
+
+Die Wahl des richtigen Appenders hängt von den Anforderungen Ihres Projekts und den spezifischen Logging-Anforderungen ab. 
+Es ist oft sinnvoll, mehrere Appender zu konfigurieren, um Log-Nachrichten an verschiedene Ziele gleichzeitig zu senden, 
+z. B. an die Konsole für die Entwicklung und in eine Datei für die Langzeitaufbewahrung.
+
+Die Log-Ebenen in Log4j2 sind eine Möglichkeit, die Wichtigkeit von Protokollmeldungen zu definieren. Es gibt 8 Log-Ebenen, 
+die in einer hierarchischen Reihenfolge angeordnet sind:
+
+All - Alle Nachrichten werden ausgegeben, unabhängig von ihrer Wichtigkeit.
+Trace - Detaillierte Informationen über den Ablauf des Programms.
+Debug - Informationen zur Ausführung des Programms, z. B. Werte von Variablen.
+Info - Normale Informationen über den Ablauf des Programms.
+Warn - Warnungen über potenzielle Probleme.
+Error - Fehler, die das Programm beeinträchtigen können.
+Fatal - Kritischer Fehler, die das Programm zum Absturz bringen können.
+Off - Keine Nachrichten werden ausgegeben.
+Die Log-Ebenen werden verwendet, um zu steuern, welche Nachrichten an einen Appender geschrieben werden. 
+Wenn Sie die Log-Ebene eines Loggers auf INFO setzen, werden nur Nachrichten mit der Ebene INFO oder höher an den Appender geschrieben. 
+Nachrichten mit niedrigeren Ebenen werden ignoriert.
+
+Die Standard-Log-Ebene für den Root-Logger ist INFO. Das bedeutet, dass der Root-Logger standardmäßig nur Nachrichten
+mit der Ebene INFO oder höher schreibt.
+
+-->
